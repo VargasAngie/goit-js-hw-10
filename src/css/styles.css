@@ -17,4 +17,27 @@ body {
   padding: 8px;
   max-width: 320px;
   margin-bottom: 16px;
+  margin: 40px 40px 0;
+}
+
+ul {
+  list-style: none;
+}
+
+.countriesList__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.countriesList__name {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.countriesList__flag {
+  width: 30px;
+  height: 20px;
+ margin-right: 20px;
 }
