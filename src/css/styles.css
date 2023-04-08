@@ -24,19 +24,25 @@ ul {
   list-style: none;
 }
 
-.countriesList__container {
+.countries-list__container {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.countriesList__name {
+.countries-list__name {
   font-size: 30px;
   font-weight: 700;
   margin: 0;
 }
 
-.countriesList__flag {
+.countries-list__names {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.countries-list__flag {
   width: 30px;
   height: 20px;
  margin-right: 20px;

@@ -1,11 +1,10 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
-
-const fetchCountries = require('./fetchCountries');
+import fetchCountries from './fetchCountries';
 
 const markupInput = document.querySelector('#search-box');
-const markupList = document.querySelector('.country-list');
+const markupList = document.querySelector('.countries-list');
 
 const DEBOUNCE_DELAY = 300;
 
@@ -16,11 +15,15 @@ markupInput.addEventListener(
     if (name) {
       fetchCountries(name)
         .then(countries => {
-          if (countries.length > 9) {
+          if (countries.length > 10) {
             Notiflix.Notify.info(
               'Too many matches found. Please enter a more specific name.'
             );
-          } else { return makeCountriesList(countries) };
+          } else if (countries.length > 2 && countries.length < 10) {
+            return makeCountriesList(countries);
+          } else {
+            return renderCountry(countries);
+          }
         })
         .catch(error =>
           Notiflix.Notify.failure('Oops, there is no country with that name')
@@ -31,19 +34,34 @@ markupInput.addEventListener(
   DEBOUNCE_DELAY
 );
 
-function makeCountriesList(countries) {
-  const countriesList = countries
+function makeCountriesList(arr) {
+  const countriesArr = arr
     .map(country => {
       return `<li>
-      <div class= countriesList__container>
-        <img class="countriesList__flag" src= ${country.flags.svg} ></>
-            <p class="countriesList__name"><b>${country.name.official}</p>
+      <div class= countries-list__container>
+        <img class="countries-list__flag" src= ${country.flags.svg} ></>
+            <p class="countries-list__names">${country.name.official}</p>
       </div>
-            <p><b>Capital</b>: ${country.capital}</p>
-            <p><b>Population</b>: ${country.population}</p>
-            <p><b>Languages</b>: ${JSON.stringify(country.languages)}</p>
+      </li>`;
+    })
+    .join('');
+  markupList.innerHTML = countriesArr;
+}
+
+function renderCountry(countries) {
+  const countryDetails = countries
+    .map(country => {
+      const languagesObj = country.languages;
+      return `<li>
+      <div class= countries-list__container>
+        <img class="countries-list__flag" src= ${country.flags.svg} ></>
+            <p class="countries-list__name"><b>${country.name.official}</b></p>
+      </div>
+            <p><b>Capital:</b> ${country.capital}</p>
+            <p><b>Population:</b> ${country.population}</p>
+            <p><b>Languages:</b> ${Object.values(languagesObj)}</p>
         </li>`;
     })
     .join('');
-  markupList.innerHTML = countriesList;
+  markupList.innerHTML = countryDetails;
 }
